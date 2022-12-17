@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> CRUD Task</title>
+    <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js">
+    </script>
+    <link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/site-demos.css">
+</head>
+
+<body>
+    
+    <div class="container">
+        <h1> SignUp Form</h1>
+        <form autocomplete="off">
+          <table>
+            <tr>
+              <td><label for="name">Name:</label></td>
+              <td><input type="text" name="name" id="name" Required></td>
+            </tr>
+            <tr>
+              <td><label for="email">Email:</label></td>
+              <td><input type="text" name="email" id="email" Required></td>
+            </tr>
+            <tr>
+              <td><label for="password">Password:</label></td>
+              <td><input type="password" name="pass" id="pass"></td>
+            </tr>
+            <tr>
+                <td><label for="cpassword">Confirm Password:</label></td>
+                <td><input type="password" name="cpass" id="cpass"></td>
+              </tr>
+            <tr>
+              <td><label for="phone">Phone Number:</label></td>
+              <td><input type="text" name="phone" id="phone" Required></td>
+            </tr>
+            <tr>
+              <td><label for="gender">Gender:</label></td>
+              <td>Male: <input type="radio" name="gender" value="male" Required>
+                Female: <input type="radio" name="gender" value="female" Required>
+                </td>
+            </tr>
+                                    
+            <tr>
+              <td colspan="2"><input type="submit" class="submit" value="SignUp" onclick="createData()"/></td>
+            </tr>
+          </table>
+        </form>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+        </script>
+        </div>
+   
+      <div id="msg"></div> 
+
+     <!-- FORM DATA  -->
+    
+
+    <h2> List </h2>
+    <table border="1" id="mytable" >
+        <thead>
+            <tr>
+                <td > S.No.</td>
+                <td > Name </td>
+                <td >Action</td>
+            </tr>
+        </thead>
+        <tbody id="root"></tbody>
+         
+    </table>  
+
+  
+    <script src="index.js"> </script>
+
+</body>
+
+</html>
