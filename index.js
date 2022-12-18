@@ -1,127 +1,74 @@
+var selectedRow = null
 
-// VALIDATION PART
-// function registration()
-// 	{
-
-// 		var name= document.getElementById("name").value;
-// 		var email= document.getElementById("email").value;
-// 		var pass= document.getElementById("pass").value;
-// 		var cpass= document.getElementById("cpass").value;			
-// 		var phone= document.getElementById("phone").value;
-//       if(name=='')
-// 		{
-// 			windows.alert('Please enter your name');
-// 		}
-// 		else if(!letters.test(name))
-// 		{
-// 			alert('Name field required only alphabet characters');
-// 		}
-// 		else if(email=='')
-// 		{
-// 			alert('Please enter your name email id');
-// 		}
-// 		else if (!filter.test(email))
-// 		{
-// 			alert('Invalid email');}
-        
-//         else if(pass=='')
-// 		{
-// 			alert('Please enter Password');
-// 		}
-// 		else if(cpass=='')
-// 		{
-// 			alert('Enter Confirm Password');
-// 		}
-// 		else if(!pass_expression.test(pass))
-// 		{
-// 			alert ('Upper case, Lower case, Special character and Numeric letter are required in Password filed');
-// 		}
-// 		else if(pass != cpass)
-// 		{
-// 			alert ('Password not Matched');}
-//     }
-
- 
-// CRUD SECTION
-
-let id="no"
-localStorage.clear ();
-
-readData ();
-
-function createData () {
-    document.getElementById('msg').innerHTML="";
-    let name= document.getElementById('name').value;
-    if (name=='') {
-        document.getElementById('msg').innerHTML= "*Required";
-    }else{
-        if (id=="no") {
-            let arr=getCrudData();
-            if (arr==null ) {
-                let data =[name];
-                setCrudData(data);
-            }else{
-                arr.push(name);
-                setCrudData(arr);
-            }
-            document.getElementById('name').value="";
-            document.getElementById('msg').innerHTML="Data Added";
-
-        }else{
-            let arr=getCrudData();
-            arr[id]= name;
-            setCrudData(arr);
-            document.getElementById('msg').innerHTML="Data Updated";
-        }
-        document.getElementById('name').value="";
-        readData ();
+function onFormSubmit() {
+    if (validate()) {
+        var formData = readFormData();
+        if (selectedRow == null)
+            insertNewRecord(formData);
+        else
+            updateRecord(formData);
+        resetForm();
     }
-
 }
 
-function readData () {
-    let arr=getCrudData();
-    if (arr!=null) {
-        let html="";
-        let srno=1;
-        for (let n in arr) {
-            html= html+
-            `<tr><td>${srno}</td><td>${arr[n]}</td>
-            <td><a href="javascript:void(0)" onClick="editData(${n})"
-             >Edit </a> &nbsp; 
-             <a href="javascript:void(0)" onClick="deleteData(${n})"
-             >Delete </a> </td></tr>`;
-            srno++;
-          }         
-        document.getElementById('root').innerHTML=html;
-
-    }   
+function readFormData() {
+    var formData = {};
+    formData["name"] = document.getElementById("name").value;
+    formData["phone"] = document.getElementById("phone").value;
+    formData["email"] = document.getElementById("email").value;
+    return formData;
 }
 
-function editData (rid) {
-    id=rid;
-    let arr=getCrudData();
-    document.getElementById('name').value=arr[rid];
-   
+function insertNewRecord(data) {
+    var table = document.getElementById("myList").getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow(table.length);
+    cell1 = newRow.insertCell(0);
+    cell1.innerHTML = data.name;
+    cell2 = newRow.insertCell(1);
+    cell2.innerHTML = data.phone;
+    cell3 = newRow.insertCell(2);
+    cell3.innerHTML = data.email;
+    cell3 = newRow.insertCell(3);
+    cell3.innerHTML = `<a onClick="onEdit(this)">Edit</a>
+                       <a onClick="onDelete(this)">Delete</a>`;
 }
 
-function deleteData (rid) {
-    let arr=getCrudData();
-    arr.splice (rid,1);
-    setCrudData(arr);
-    readData();    
+function resetForm() {
+    document.getElementById("name").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("email").value = "";
+    selectedRow = null;
 }
 
-
-// REDEFINING FUNCTIONS TO MAKE IT SHORT
-
-function setCrudData(arr){
-    localStorage.setItem('crud',JSON.stringify(arr));
-    return arr;
+function onEdit(td) {
+    selectedRow = td.parentElement.parentElement;
+    document.getElementById("name").value = selectedRow.cells[0].innerHTML;
+    document.getElementById("phone").value = selectedRow.cells[1].innerHTML;
+    document.getElementById("email").value = selectedRow.cells[2].innerHTML;
+}
+function updateRecord(formData) {
+    selectedRow.cells[0].innerHTML = formData.name;
+    selectedRow.cells[1].innerHTML = formData.phone;
+    selectedRow.cells[2].innerHTML = formData.email;
 }
 
-function getCrudData(){
-    let arr=JSON.parse(localStorage.getItem('crud'));
-    return arr;
+function onDelete(td) {
+    if (confirm('Are you sure to delete this record ?')) {
+        row = td.parentElement.parentElement;
+        document.getElementById("myList").deleteRow(row.rowIndex);
+        resetForm();
+    }
 }
-
+function validate() {
+    isValid = true;
+    if (document.getElementById("name").value == "")
+    {
+        isValid = false;
+        document.getElementById("nameValidationError").classList.remove("hide");
+    } else {
+        isValid = true;
+        if (!document.getElementById("nameValidationError").classList.contains("hide"))
+            document.getElementById("nameValidationError").classList.add("hide");
+    }
+    return isValid;
+}
